@@ -1,0 +1,472 @@
+[
+  {
+    "theme": "Hope",
+    "gradient": 0,
+    "verses": [
+      ["Jeremiah",29,11],
+      ["Romans",8,28],
+      ["Psalm",121,1],
+      ["Proverbs",3,5]
+    ]
+  },
+  {
+    "theme": "Peace",
+    "gradient": 1,
+    "verses": [
+      ["John",14,27],
+      ["Philippians",4,6],
+      ["Isaiah",26,3],
+      ["Psalm",29,11]
+    ]
+  },
+  {
+    "theme": "Faith",
+    "gradient": 2,
+    "verses": [
+      ["Hebrews",11,1],
+      ["Mark",9,23],
+      ["Romans",10,17],
+      ["2 Corinthians",5,7]
+    ]
+  },
+  {
+    "theme": "Strength",
+    "gradient": 3,
+    "verses": [
+      ["Isaiah",41,10],
+      ["Joshua",1,9],
+      ["Philippians",4,13],
+      ["Psalm",46,1]
+    ]
+  },
+  {
+    "theme": "Love",
+    "gradient": 4,
+    "verses": [
+      ["John",3,16],
+      ["1 Corinthians",13,4],
+      ["Romans",5,8],
+      ["1 John",4,19]
+    ]
+  },
+  {
+    "theme": "Wisdom",
+    "gradient": 5,
+    "verses": [
+      ["James",1,5],
+      ["Proverbs",2,6],
+      ["Proverbs",9,10],
+      ["Ecclesiastes",7,12]
+    ]
+  },
+  {
+    "theme": "Prayer",
+    "gradient": 5,
+    "verses": [
+      ["Matthew",7,7],
+      ["Philippians",4,6],
+      ["Jeremiah",33,3],
+      ["1 Thessalonians",5,17]
+    ]
+  },
+    {
+      "theme": "Grace",
+      "gradient": 6,
+      "verses": [
+        ["Ephesians",2,8],
+        ["2 Corinthians",12,9],
+        ["Hebrews",4,16],
+        ["Romans",6,14]
+      ]
+    },
+    {
+      "theme": "Forgiveness",
+      "gradient": 7,
+      "verses": [
+        ["1 John",1,9],
+        ["Ephesians",4,32],
+        ["Colossians",3,13],
+        ["Psalm",103,12]
+      ]
+    },
+    {
+      "theme": "Victory",
+      "gradient": 0,
+      "verses": [
+        ["Romans",8,37],
+        ["1 Corinthians",15,57],
+        ["1 John",5,4],
+        ["Psalm",60,12]
+      ]
+    },
+    {
+      "theme": "Protection",
+      "gradient": 1,
+      "verses": [
+        ["Psalm",91,1],
+        ["Psalm",121,7],
+        ["Isaiah",54,17],
+        ["Proverbs",18,10]
+      ]
+    },
+    {
+      "theme": "Healing",
+      "gradient": 2,
+      "verses": [
+        ["Jeremiah",30,17],
+        ["Psalm",147,3],
+        ["Exodus",15,26],
+        ["Isaiah",53,5]
+      ]
+    },
+    {
+      "theme": "Guidance",
+      "gradient": 3,
+      "verses": [
+        ["Psalm",32,8],
+        ["Psalm",119,105],
+        ["Isaiah",30,21],
+        ["Proverbs",16,9]
+      ]
+    },
+    {
+      "theme": "Joy",
+      "gradient": 4,
+      "verses": [
+        ["Nehemiah",8,10],
+        ["Psalm",16,11],
+        ["John",15,11],
+        ["Romans",15,13]
+      ]
+    },
+    {
+      "theme": "Humility",
+      "gradient": 5,
+      "verses": [
+        ["James",4,10],
+        ["Micah",6,8],
+        ["Philippians",2,3],
+        ["1 Peter",5,6]
+      ]
+    },
+    {
+      "theme": "Obedience",
+      "gradient": 6,
+      "verses": [
+        ["John",14,15],
+        ["James",1,22],
+        ["Deuteronomy",5,33],
+        ["1 Samuel",15,22]
+      ]
+    },
+    {
+      "theme": "God's Presence",
+      "gradient": 7,
+      "verses": [
+        ["Matthew",28,20],
+        ["Deuteronomy",31,8],
+        ["Psalm",23,4],
+        ["Zephaniah",3,17]
+      ]
+    },
+    {
+      "theme": "Trust",
+      "gradient": 0,
+      "verses": [
+        ["Psalm",56,3],
+        ["Nahum",1,7],
+        ["Isaiah",26,4],
+        ["Psalm",37,5]
+      ]
+    },
+    {
+      "theme": "Salvation",
+      "gradient": 1,
+      "verses": [
+        ["Acts",4,12],
+        ["Romans",10,9],
+        ["John",14,6],
+        ["Titus",3,5]
+      ]
+    },
+    {
+      "theme": "Holiness",
+      "gradient": 2,
+      "verses": [
+        ["1 Peter",1,16],
+        ["Hebrews",12,14],
+        ["Matthew",5,8],
+        ["Leviticus",20,26]
+      ]
+    },
+    {
+      "theme": "Patience",
+      "gradient": 3,
+      "verses": [
+        ["Romans",12,12],
+        ["James",5,7],
+        ["Psalm",27,14],
+        ["Galatians",6,9]
+      ]
+    },
+    {
+      "theme": "Praise",
+      "gradient": 4,
+      "verses": [
+        ["Psalm",150,6],
+        ["Psalm",34,1],
+        ["Psalm",95,1],
+        ["Hebrews",13,15]
+      ]
+    },
+    {
+      "theme": "Mercy",
+      "gradient": 5,
+      "verses": [
+        ["Lamentations",3,22],
+        ["Psalm",103,8],
+        ["Hebrews",4,16],
+        ["Micah",7,18]
+      ]
+    },
+    {
+      "theme": "New Life",
+      "gradient": 6,
+      "verses": [
+        ["2 Corinthians",5,17],
+        ["Isaiah",43,19],
+        ["Ezekiel",36,26],
+        ["Revelation",21,5]
+      ]
+    },
+    {
+      "theme": "Perseverance",
+      "gradient": 7,
+      "verses": [
+        ["Hebrews",12,1],
+        ["James",1,12],
+        ["Romans",5,3],
+        ["2 Timothy",4,7]
+      ]
+    },
+    {
+      "theme": "Light",
+      "gradient": 0,
+      "verses": [
+        ["John",8,12],
+        ["Matthew",5,14],
+        ["Isaiah",60,1],
+        ["1 John",1,7]
+      ]
+    },
+    {
+      "theme": "God's Promises",
+      "gradient": 1,
+      "verses": [
+        ["Numbers",23,19],
+        ["Joshua",21,45],
+        ["Hebrews",10,23],
+        ["2 Peter",1,4]
+      ]
+    },
+    {
+      "theme": "Contentment",
+      "gradient": 2,
+      "verses": [
+        ["Philippians",4,11],
+        ["Hebrews",13,5],
+        ["1 Timothy",6,6],
+        ["Psalm",23,1]
+      ]
+    },
+    {
+      "theme": "Encouragement",
+      "gradient": 3,
+      "verses": [
+        ["Isaiah",40,29],
+        ["Psalm",31,24],
+        ["Deuteronomy",20,4],
+        ["Romans",15,5]
+      ]
+    },
+    {
+      "theme": "God's Faithfulness",
+      "gradient": 4,
+      "verses": [
+        ["Lamentations",3,23],
+        ["Deuteronomy",7,9],
+        ["Psalm",36,5],
+        ["2 Thessalonians",3,3]
+      ]
+    },
+    {
+      "theme": "Blessings",
+      "gradient": 5,
+      "verses": [
+        ["Deuteronomy",28,2],
+        ["Psalm",84,11],
+        ["James",1,17],
+        ["Malachi",3,10]
+      ]
+    },
+    {
+      "theme": "Victory Through Christ",
+      "gradient": 6,
+      "verses": [
+        ["John",16,33],
+        ["2 Chronicles",20,15],
+        ["Psalm",20,7],
+        ["Exodus",14,14]
+      ]
+    },
+    {
+      "theme": "God's Power",
+      "gradient": 7,
+      "verses": [
+        ["Jeremiah",32,27],
+        ["Luke",1,37],
+        ["Ephesians",3,20],
+        ["Job",42,2]
+      ]
+    },
+    {
+      "theme": "Waiting on God",
+      "gradient": 0,
+      "verses": [
+        ["Psalm",130,5],
+        ["Isaiah",64,4],
+        ["Psalm",25,5],
+        ["Habakkuk",2,3]
+      ]
+    },
+    {
+      "theme": "Thanksgiving",
+      "gradient": 1,
+      "verses": [
+        ["Psalm",100,4],
+        ["Colossians",3,17],
+        ["Psalm",107,1],
+        ["Ephesians",5,20]
+      ]
+    },
+    {
+      "theme": "Seeking God",
+      "gradient": 2,
+      "verses": [
+        ["Matthew",6,33],
+        ["Psalm",63,1],
+        ["Amos",5,4],
+        ["Hebrews",11,6]
+      ]
+    },
+    {
+      "theme": "God's Kingdom",
+      "gradient": 3,
+      "verses": [
+        ["Matthew",6,10],
+        ["Romans",14,17],
+        ["Luke",17,21],
+        ["Colossians",1,13]
+      ]
+    },
+    {
+      "theme": "Righteousness",
+      "gradient": 4,
+      "verses": [
+        ["Matthew",5,6],
+        ["Psalm",1,6],
+        ["Proverbs",21,21],
+        ["Isaiah",61,10]
+      ]
+    },
+    {
+      "theme": "Compassion",
+      "gradient": 5,
+      "verses": [
+        ["Psalm",145,8],
+        ["Luke",6,36],
+        ["Colossians",3,12],
+        ["Ephesians",4,32]
+      ]
+    },
+    {
+      "theme": "God's Word",
+      "gradient": 6,
+      "verses": [
+        ["2 Timothy",3,16],
+        ["Joshua",1,8],
+        ["Psalm",19,7],
+        ["Hebrews",4,12]
+      ]
+    },
+    {
+      "theme": "Serving God",
+      "gradient": 7,
+      "verses": [
+        ["Joshua",24,15],
+        ["Galatians",5,13],
+        ["Mark",10,45],
+        ["Romans",12,11]
+      ]
+    },
+    {
+      "theme": "Generosity",
+      "gradient": 0,
+      "verses": [
+        ["Luke",6,38],
+        ["Proverbs",11,25],
+        ["2 Corinthians",9,7],
+        ["Acts",20,35]
+      ]
+    },
+    {
+      "theme": "God's Goodness",
+      "gradient": 1,
+      "verses": [
+        ["Psalm",34,8],
+        ["Nahum",1,7],
+        ["Psalm",145,9],
+        ["Romans",2,4]
+      ]
+    },
+    {
+      "theme": "Comfort",
+      "gradient": 2,
+      "verses": [
+        ["2 Corinthians",1,3],
+        ["Psalm",94,19],
+        ["Matthew",11,28],
+        ["Isaiah",66,13]
+      ]
+    },
+    {
+      "theme": "God's Sovereignty",
+      "gradient": 3,
+      "verses": [
+        ["Daniel",4,35],
+        ["Psalm",115,3],
+        ["Isaiah",46,10],
+        ["Romans",11,36]
+      ]
+    },
+    {
+      "theme": "Spiritual Growth",
+      "gradient": 4,
+      "verses": [
+        ["2 Peter",3,18],
+        ["Colossians",2,6],
+        ["Ephesians",4,15],
+        ["Psalm",92,12]
+      ]
+    },
+    {
+      "theme": "Eternal Reward",
+      "gradient": 5,
+      "verses": [
+        ["Matthew",25,21],
+        ["Revelation",2,10],
+        ["1 Corinthians",2,9],
+        ["2 Timothy",4,8]
+      ]
+    }
+  ]

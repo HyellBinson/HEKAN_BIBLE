@@ -1,0 +1,80 @@
+name: hekan_bible
+description: "Mobile App Bible"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  sqflite: ^2.3.0
+  path: ^1.9.0
+  shared_preferences: ^2.2.3
+  share_plus: ^10.0.0
+  flutter_local_notifications: ^19.4.0
+  timezone: ^0.10.1
+  image_picker: ^1.2.2
+  permission_handler: ^11.3.1
+  android_intent_plus: ^5.0.0
+
+  firebase_core: ^4.1.1
+  firebase_auth: ^6.0.2
+  cloud_firestore: ^6.0.1
+  firebase_storage: ^13.0.1
+
+
+  url_launcher: ^6.3.2
+
+
+  package_info_plus: ^8.3.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_launcher_icons: ^0.14.4
+
+
+  flutter_lints: ^6.0.0
+
+  firebase_core: ^4.1.1
+  firebase_auth: ^6.0.2
+  google_sign_in: ^6.3.0
+  cloud_firestore: ^6.0.1
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/bible.db
+    - assets/hymns/english_hymns.json
+    - assets/hymns/hausa_hymns.json
+    - assets/images/prayer_bg.jpg
+    - assets/prayers/prayers.json
+    - assets/images/evening_prayer.jpg
+    - assets/images/morning_prayer.jpg
+    - assets/images/testament_bg.jpg
+    - assets/images/hymns_bg.jpg
+    - assets/icon/app_icon.png
+    - assets/icon/google.png
+    - assets/images/google.png
+    - assets/daily/daily_verses.json
+
+flutter_local_notifications: ^19.4.0
+timezone: ^0.10.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
+
+firebase_storage: ^13.0.1
