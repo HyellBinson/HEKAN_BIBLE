@@ -14,7 +14,7 @@ import 'settings_service.dart';
 import 'notes_screen.dart';
 import 'dart:math';
 import 'responsive.dart';
-
+import 'update_service.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -159,6 +159,60 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+  Future<void> checkForUpdates() async {
+    final info = await UpdateService.checkForUpdate();
+
+    if (info == null) return;
+
+    final current = info["currentVersion"];
+    final latest = info["latestVersion"];
+
+    if (current != latest) {
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        barrierDismissible: !info["forceUpdate"],
+        builder: (_) {
+          return AlertDialog(
+            title: const Text("Update Available"),
+
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    "A new version ($latest) of HEKAN Bible is available.\n"),
+                Text(info["whatsNew"]),
+              ],
+            ),
+
+            actions: [
+              if (!info["forceUpdate"])
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Later"),
+                ),
+
+              ElevatedButton(
+                onPressed: () async {
+                  await UpdateService.openDownload(
+                    info["downloadUrl"],
+                  );
+                },
+                child: const Text("Update"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+
   Future<void> refreshHome() async {
     await loadContinueReading();
     await loadTodaysVerse();
@@ -180,6 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
     loadTodaysVerse();
     loadContinueReading();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkForUpdates();
 
       if (widget.resumeBible) {
 
