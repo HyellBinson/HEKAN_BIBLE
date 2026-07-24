@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hyellbinson.github.io/HEKAN_BIBLE/sitemap.xml
