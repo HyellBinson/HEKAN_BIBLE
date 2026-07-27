@@ -15,6 +15,8 @@ import 'notes_screen.dart';
 import 'dart:math';
 import 'responsive.dart';
 import 'update_service.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -210,6 +212,43 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
     }
+  }
+
+
+  Future<void> _shareVerse() async {
+    if (todayVerse.isEmpty) return;
+
+    final text =
+        "${todayVerse["text"]}\n\n${todayVerse["book"]} ${todayVerse["chapter"]}:${todayVerse["verse"]} ($version)\n\nShared from HEKAN Bible";
+
+    await Share.share(text);
+  }
+
+  Future<void> _copyVerse() async {
+    if (todayVerse.isEmpty) return;
+
+    await Clipboard.setData(
+      ClipboardData(
+        text:
+        "${todayVerse["text"]}\n\n${todayVerse["book"]} ${todayVerse["chapter"]}:${todayVerse["verse"]}",
+      ),
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Verse copied to clipboard"),
+      ),
+    );
+  }
+
+  void _bookmarkVerse() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Bookmark feature coming soon"),
+      ),
+    );
   }
 
 
@@ -411,61 +450,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Padding(
-              padding: EdgeInsets.fromLTRB(
-                16 * scale,
-                14 * scale,
-                16 * scale,
-                14 * scale,
+              padding: EdgeInsets.only(
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 14 * scale,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Welcome back, ${widget.name} 👋",
-                              style: TextStyle(
-                                color: isDark ? Colors.white70 : Colors.black54,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "HEKAN",
-                              style: TextStyle(
-                                fontSize: 32 * scale,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: -1,
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen())),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.05),
-                          ),
-                          child: const Icon(Icons.search_rounded, size: 22),
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  SizedBox(height: 20 * scale),
 
                   // TODAY'S VERSE - Bigger Modern Card
-                  Expanded(
-                    flex: screenWidth < 360 ? 4 : 3,// Bigger card
+                  SizedBox(
+                    height: 330 * scale,
                     child: GestureDetector(
                       onTap: () async {
                         await Navigator.push(
@@ -485,7 +484,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(32 * scale),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(32 * scale),
+                            bottomRight: Radius.circular(32 * scale),
+                          ),
                           gradient: LinearGradient(
                             colors: todayGradient,
                             begin: Alignment.topLeft,
@@ -508,56 +510,54 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
 
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: badgePaddingH,
-                                        vertical: badgePaddingV,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.20),
-                                        borderRadius: BorderRadius.circular(22),
-                                      ),
-                                      child: Text(
-                                        "TODAY'S VERSE",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: titleSize,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 0.5,
-                                        ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+
+                                          Text("Welcome Back "),
+                                          Text(widget.name),
+                                          SizedBox(height: 20),
+                                          Text("TODAY'S VERSE"),
+
+                                        ],
                                       ),
                                     ),
 
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
 
-                                    const Spacer(),
-
-                                    if (continueReading.isNotEmpty)
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => VerseScreen(
-                                                book: continueReading["book"],
-                                                chapter: continueReading["chapter"],
-                                                targetVerse: continueReading["verse"],
-                                                initialVersion: continueReading["version"],
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => const SearchScreen(),
                                               ),
-                                            ),
-                                          );
+                                            );
+                                          },
+                                          child: const Icon(
+                                            Icons.search_rounded,
+                                            color: Colors.white,
+                                            size: 28,
+                                          ),
+                                        ),
 
-                                          await refreshHome();
-                                        },
-                                        child: Container(
+                                        SizedBox(height: 10),
+
+                                        // 👇 PASTE YOUR LAST READ CONTAINER HERE
+                                        Container(
                                           padding: EdgeInsets.symmetric(
-                                            horizontal: 10 * scale,
-                                            vertical: 6 * scale,
+                                            horizontal: 12 * scale,
+                                            vertical: 8 * scale,
                                           ),
                                           decoration: BoxDecoration(
                                             color: const Color(0xFF1E293B),
-                                            borderRadius: BorderRadius.circular(16),
+                                            borderRadius: BorderRadius.circular(18),
                                             border: Border.all(
                                               color: Colors.amber,
                                               width: 1,
@@ -567,37 +567,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                               Text(
+                                              Text(
                                                 "LAST READ",
                                                 style: TextStyle(
                                                   color: Colors.amber,
-                                                  fontSize: 8 * scale,
+                                                  fontSize: 9 * scale,
                                                   fontWeight: FontWeight.bold,
                                                   letterSpacing: 1,
                                                 ),
                                               ),
-                                              const SizedBox(height: 2),
-                                              Text(
-                                                "📖 ${continueReading["book"]} ${continueReading["chapter"]}:${continueReading["verse"]}",
-                                                style:  TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 10 * scale,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+
+                                              SizedBox(height: 3 * scale),
+
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+
+                                                  const Icon(
+                                                    Icons.menu_book_rounded,
+                                                    color: Colors.white,
+                                                    size: 14,
+                                                  ),
+
+                                                  SizedBox(width: 5 * scale),
+
+                                                  Text(
+                                                    "${continueReading["book"]} ${continueReading["chapter"]}:${continueReading["verse"]}",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12 * scale,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ),
 
-
-                                    const Spacer(),
-
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white70,
-                                      size: iconSize,
+                                      ],
                                     ),
+
                                   ],
                                 ),
                                 const SizedBox(height: 16),
@@ -624,7 +634,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
 
-                                const SizedBox(height: 12),
+
                                 const SizedBox(height: 12),
                                 Row(
                                   children: [
@@ -638,20 +648,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-
                                     const SizedBox(width: 8),
-
-
-
                                   ],
                                 ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.share, color: Colors.white),
+                                      onPressed: _shareVerse,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.copy, color: Colors.white),
+                                      onPressed: _copyVerse,
+                                    ),
+                                  ],
+                                )
+
+
                               ],
                             ),
                           ),
                         ),
                       ),
                     ),
+
                   ),
+
 
                   SizedBox(height: 16 * scale),
 
@@ -663,7 +686,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 16),
 
                   Flexible(
-                    flex: screenWidth < 360 ? 3 : 4,
+                    flex: screenWidth < 360 ? 1 : 1,
                     child: GridView.count(
                       crossAxisCount: isLandscape ? 4 : 2,
                       physics: const BouncingScrollPhysics(),
