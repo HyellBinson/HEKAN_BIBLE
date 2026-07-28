@@ -11,7 +11,7 @@ class LicenseScreen extends StatelessWidget {
 
     return LicensePage(
       applicationName: "HEKAN Bible",
-      applicationVersion: "Version 1.0.0",
+      applicationVersion: "Version 1.0.3",
       applicationLegalese: "© 2026 HEKAN Nigeria\nAll Rights Reserved.",
       applicationIcon: Padding(
         padding: EdgeInsets.all(12 * scale),
