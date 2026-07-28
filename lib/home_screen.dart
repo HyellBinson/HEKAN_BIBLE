@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:hekan_bible/settings_screen.dart';
 import 'bible_screen.dart';
 import 'search_screen.dart';
 import 'prayer_screen.dart';
@@ -17,6 +18,10 @@ import 'responsive.dart';
 import 'update_service.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'bookmark_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
 
@@ -59,6 +64,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String imageBase64 = "";
   Timer? _colorTimer;
 
   // Today's verse
@@ -214,6 +220,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> loadProfilePhoto() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final doc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get();
+
+    if (!doc.exists) return;
+
+    if (!mounted) return;
+
+    setState(() {
+      imageBase64 = doc.data()?["profileImage"] ?? "";
+    });
+  }
 
   Future<void> _shareVerse() async {
     if (todayVerse.isEmpty) return;
@@ -269,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadLastScreen();
+    loadProfilePhoto();
 
     loadTodaysVerse();
     loadContinueReading();
@@ -423,16 +446,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final scale = screenWidth < 360
-        ? 0.85
-        : screenWidth < 390
-        ? 0.92
-        : 1.0;
+    final scale = (screenWidth / 375).clamp(0.78, 1.1);
+    final isSmall = screenWidth < 360;
+    final isTiny = screenWidth < 340;
 
     final cardRadius = 32.0 * scale;
     final cardPadding = 24.0 * scale;
     final titleSize = 13.5 * scale;
-    final verseSize = 20.5 * scale;
+    final verseSize = screenWidth < 360
+        ? 16.0
+        : screenWidth < 390
+        ? 18.0
+        : 20.0;
     final referenceSize = 15.5 * scale;
     final iconSize = 19.0 * scale;
     final badgePaddingH = 14.0 * scale;
@@ -464,7 +489,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   // TODAY'S VERSE - Bigger Modern Card
                   SizedBox(
-                    height: 330 * scale,
+                    height: isTiny
+                        ? 250 * scale
+                        : isSmall
+                        ? 280 * scale
+                        : 310 * scale,
                     child: GestureDetector(
                       onTap: () async {
                         await Navigator.push(
@@ -518,10 +547,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
 
-                                          Text("Welcome Back "),
-                                          Text(widget.name),
-                                          SizedBox(height: 20),
-                                          Text("TODAY'S VERSE"),
+                                          Text(
+                                            "Welcome Back 👋",
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14 * scale,
+                                            ),
+                                          ),
+                                          Text(
+                                            widget.name,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: screenWidth < 360 ? 24 : 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "TODAY'S VERSE",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: screenWidth < 360 ? 14 : 16,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
 
                                         ],
                                       ),
@@ -531,79 +581,81 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
 
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (_) => const SearchScreen(),
-                                              ),
-                                            );
-                                          },
-                                          child: const Icon(
-                                            Icons.search_rounded,
-                                            color: Colors.white,
-                                            size: 28,
-                                          ),
-                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
 
-                                        SizedBox(height: 10),
-
-                                        // 👇 PASTE YOUR LAST READ CONTAINER HERE
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 12 * scale,
-                                            vertical: 8 * scale,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFF1E293B),
-                                            borderRadius: BorderRadius.circular(18),
-                                            border: Border.all(
-                                              color: Colors.amber,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "LAST READ",
-                                                style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 9 * scale,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1,
-                                                ),
-                                              ),
-
-                                              SizedBox(height: 3 * scale),
-
-                                              Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-
-                                                  const Icon(
-                                                    Icons.menu_book_rounded,
-                                                    color: Colors.white,
-                                                    size: 14,
-                                                  ),
-
-                                                  SizedBox(width: 5 * scale),
-
-                                                  Text(
-                                                    "${continueReading["book"]} ${continueReading["chapter"]}:${continueReading["verse"]}",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12 * scale,
-                                                      fontWeight: FontWeight.w600,
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) => ProfileScreen(
+                                                      name: widget.name,
+                                                      onThemeChanged: widget.onThemeChanged,
                                                     ),
                                                   ),
-                                                ],
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(2.5),
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: Colors.amber,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                child: CircleAvatar(
+                                                  radius: screenWidth < 360
+                                                      ? 18
+                                                      : screenWidth < 400
+                                                      ? 20
+                                                      : 24,
+                                                  backgroundImage: imageBase64.isNotEmpty
+                                                      ? MemoryImage(base64Decode(imageBase64))
+                                                      : null,
+                                                  child: imageBase64.isEmpty
+                                                      ? Icon(
+                                                    Icons.person,
+                                                    size: screenWidth < 360 ? 18 : 22,
+                                                  )
+                                                      : null,
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(2),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+
+                                              ),
+
+                                            ),
+
+                                            SizedBox(width: 12 * scale),
+
+
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) => const SearchScreen(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Icon(
+                                                Icons.search_rounded,
+                                                color: Colors.amber,
+                                                size: 28 * scale,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+
+                                        SizedBox(height: 10 * scale),
+
 
                                       ],
                                     ),
@@ -613,7 +665,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const SizedBox(height: 16),
 
 // Scrollable verse text
-                                Flexible(
+                                Expanded(
                                   child: ClipRect(
                                     child: Scrollbar(
                                       child: SingleChildScrollView(
@@ -621,12 +673,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: Text(
                                           todayVerse["text"],
                                           textAlign: TextAlign.justify,
-                                          style:  TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: verseSize,
+                                            fontSize: screenWidth < 360 ? 14 : 16,
                                             fontWeight: FontWeight.w600,
-                                            height: 1.55,
-                                            letterSpacing: 0.0,
+                                            height: 1.2,
                                           ),
                                         ),
                                       ),
@@ -634,38 +685,108 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
 
+                                const SizedBox(height: 8),
 
-                                const SizedBox(height: 12),
                                 Row(
                                   children: [
+                                    // Reference
                                     const Icon(Icons.menu_book_rounded, color: Colors.white70, size: 19),
                                     const SizedBox(width: 8),
                                     Text(
                                       "${todayVerse["book"]} ${todayVerse["chapter"]}:${todayVerse["verse"]}",
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                         color: Colors.white70,
                                         fontSize: referenceSize,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
+
+                                   Spacer(),
+
+                                    if (continueReading.isNotEmpty)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => VerseScreen(
+                                                book: continueReading["book"],
+                                                chapter: continueReading["chapter"],
+                                                targetVerse: continueReading["verse"],
+                                                initialVersion: continueReading["version"],
+                                              ),
+                                            ),
+                                          );
+                                          await refreshHome();
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: screenWidth < 360 ? 7 * scale : 9 * scale,
+                                            vertical: screenWidth < 360 ? 3 * scale : 4 * scale,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF1E293B),
+                                            borderRadius: BorderRadius.circular(screenWidth < 360 ? 14 : 18),
+                                            border: Border.all(
+                                              color: Colors.amber,
+                                              width: screenWidth < 360 ? 1.2 : 1.5,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "LAST READ",
+                                                style: TextStyle(
+                                                  color: Colors.amber,
+                                                  fontSize: screenWidth < 360 ? 8 * scale : 9 * scale,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 0.3,
+                                                ),
+                                              ),
+                                              SizedBox(height: screenWidth < 360 ? 2 * scale : 4 * scale),
+                                              Text(
+                                                "${continueReading["book"]} ${continueReading["chapter"]}:${continueReading["verse"]}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: screenWidth < 360 ? 10 : 12,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                    const Spacer(),
+
+                                    // Share & Copy icons
                                     IconButton(
-                                      icon: const Icon(Icons.share, color: Colors.white),
-                                      onPressed: _shareVerse,
+                                      icon: Icon(
+                                        Icons.share,
+                                        color: Colors.amber,
+                                        size: isSmall ? 18 : 20,
+                                      ),
+                                      onPressed: _shareVerse,          // ← connected
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
                                     ),
+                                    SizedBox(width: isSmall ? 3 : 9),
                                     IconButton(
-                                      icon: const Icon(Icons.copy, color: Colors.white),
-                                      onPressed: _copyVerse,
+                                      icon: Icon(
+                                        Icons.copy,
+                                        color: Colors.amber,
+                                        size: isSmall ? 18 : 20,
+                                      ),
+                                      onPressed: _copyVerse,           // ← connected
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
                                     ),
                                   ],
                                 )
-
-
                               ],
                             ),
                           ),
@@ -676,23 +797,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
 
-                  SizedBox(height: 16 * scale),
+                  SizedBox(height: 25 * scale),
+
+
 
                   // Quick Access
-                  const Text(
+                  Text(
                     "Quick Access",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20 * scale,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
+
 
                   Flexible(
                     flex: screenWidth < 360 ? 1 : 1,
                     child: GridView.count(
-                      crossAxisCount: isLandscape ? 4 : 2,
+                      crossAxisCount: 3,
                       physics: const BouncingScrollPhysics(),
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: screenWidth < 360 ? 1.35 : 1.15,
+                      crossAxisSpacing: 12 * scale,
+                      mainAxisSpacing: isSmall ? 14 * scale : 18 * scale,
+                      childAspectRatio: isTiny ? 1.05 : isSmall ? 1.1 : 1.0,
                       children: [
                         _tile(
                           Icons.menu_book_rounded,
@@ -736,6 +863,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           scale,
                         ),
+
+                        _tile(
+                          Icons.bookmark_rounded,
+                          "Bookmarks",
+                          Colors.orange,
+                              () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const BookmarkScreen()),
+                          ),
+                          scale,
+                        ),
+
+                        _tile(
+                          Icons.settings_rounded,
+                          "Settings",
+                          Colors.blueGrey,
+                              () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                          ),
+                          scale,
+                        ),
                       ],
                     ),
                   ),
@@ -759,15 +908,20 @@ class _HomeScreenState extends State<HomeScreen> {
       VoidCallback onTap,
       double scale,
       ) {
+    final isSmall = MediaQuery
+        .of(context)
+        .size
+        .width < 360;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(28 * scale),
+        borderRadius: BorderRadius.circular(20 * scale),
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(28 * scale),
+            borderRadius: BorderRadius.circular(20 * scale),
             border: Border.all(
               color: color.withOpacity(0.25),
             ),
@@ -778,15 +932,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Icon(
                 icon,
                 color: color,
-                size: 36 * scale,
+                size: isSmall ? 28 * scale : 34 * scale,
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 8 * scale),
               Text(
                 title,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w600,
-                  fontSize: 15 * scale,
+                  fontSize: isSmall ? 13 * scale : 14.5 * scale,
                 ),
               ),
             ],

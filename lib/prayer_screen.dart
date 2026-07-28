@@ -260,7 +260,7 @@ class _PrayerScreenState extends State<PrayerScreen>
 
                               Expanded(
                                 child: Text(
-                                  todayMorningPrayer['content'],
+                                  todayEveningPrayer['content'],
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
